@@ -1,0 +1,15 @@
+{
+  "name": "shortenme",
+  "version": "1.0.0",
+  "description": "url shortener",
+  "main": "app.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "author": "Richard Turza",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "mongodb": "^2.2.16"
+  }
+}
