@@ -31,8 +31,14 @@ express()
 .get(newReg, (req, res) => {
     
     let original_url = req.url.substring(5);
-    let short_url = shortHash(original_url);
-    let response = { "original_url":original_url, "short_url": short_url};
+    let hash = shortHash(original_url);
+    let short_url = req.protocol
+                       + '://'
+                       + req.get('host')
+                       + req.originalUrl
+                       + hash;
+    let responseDoc = { "original_url":original_url, "short_url": hash };
+    let response = { "original_url":original_url, "short_url": short_url };
     
     mongodb.connect(dbURL, (err, db) => {
         if (err) {
@@ -43,16 +49,16 @@ express()
         
         db
         .collection("shorts")
-        .count({ "short_url" : {$eq : short_url} }, (err, count) => {
+        .count({ "short_url" : {$eq : hash} }, (err, count) => {
             if (err) throw err;
             
             console.log("count = ", count);
             if (count == 0 )  {
-                insertNewURL(db, response, () => {
+                insertNewURL(db, responseDoc, () => {
                     db.close();
                 });
             } else {
-                console.log(response," nebola zapísaná do DB");
+                console.log(responseDoc," nebola zapísaná do DB");
                 db.close();
             }
         });
