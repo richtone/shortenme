@@ -33,9 +33,9 @@ express()
     let original_url = req.url.substring(5);
     let hash = shortHash(original_url);
     let short_url = req.protocol
-                       + '://'
+                       + "://"
                        + req.get('host')
-                       + req.originalUrl
+                       + "/"
                        + hash;
     let responseDoc = { "original_url":original_url, "short_url": hash };
     let response = { "original_url":original_url, "short_url": short_url };
