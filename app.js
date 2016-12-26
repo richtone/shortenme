@@ -72,7 +72,7 @@ express()
         console.log("count = ", count);
         if (count == 0 )  {
             insertNewURL(responseDoc, () => {
-                appDB.close();
+                //appDB.close();
             });
         } else {
             console.log(responseDoc," nebola zapísaná do DB");
@@ -95,9 +95,8 @@ express()
         console.log("count = ", count);
         if (count == 1 )  {
             redirectURL = getOrigURL(hash, res, data => {
-                console.log(data.original_url);
                 res.redirect(data[0].original_url);
-                appDB.close();
+                //appDB.close();
             });
             
         } else {
