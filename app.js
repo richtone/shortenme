@@ -12,6 +12,7 @@ var newRegEx = /^\/new\/[a-z0-9-]+:\/\/\S+\.\S+/i;
 var redirectRegEx = /^\/[a-z0-9]{8}$/; // reťazec o 8 znakoch
 var errorJSON = {"error":"Wrong url format, make sure you have a valid protocol and real site."}; 
 
+
 mongodb.connect(dbURL, (err, db) => {
     
     if (err) {
@@ -47,9 +48,10 @@ function getOrigURL (hash, res, callback) {
 }
 
 express()
+.use(express.static(__dirname+"/html"))
 .get("/", (req, res) => {
     
-    res.end("ShortenMe app");
+    res.sendFile("index.html");
     
 })
 .get(newRegEx, (req, res) => {
@@ -72,7 +74,7 @@ express()
         console.log("count = ", count);
         if (count == 0 )  {
             insertNewURL(responseDoc, () => {
-                //appDB.close();
+            //appDB.close();
             });
         } else {
             console.log(responseDoc," nebola zapísaná do DB");
@@ -98,7 +100,6 @@ express()
                 res.redirect(data[0].original_url);
                 //appDB.close();
             });
-            
         } else {
             console.log(hash," nebol nájdený");
             res.end(JSON.stringify(errorJSON));
